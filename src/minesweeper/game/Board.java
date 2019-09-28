@@ -3,7 +3,7 @@ package minesweeper.game;
 import java.util.Random;
 
 public class Board {
-	private Tile[][] board;
+	private Tile[][] gameBoard;
 	private int sizeX;
 	private int sizeY;
 	private int mines;
@@ -31,14 +31,20 @@ public class Board {
 			break;
 		}
 		
-		board = new Tile[sizeY][sizeX];
+		gameBoard = new Tile[sizeY][sizeX];
 		
 		for (int i = 0; i < sizeY; i++) {
 			for (int j = 0; j < sizeX; j++) {
-				board[i][j] = new Tile(j, i);
+				gameBoard[i][j] = new Tile(j, i);
 			}
 		}
 	}
+	
+	
+	public Tile[][] getBoard() {
+		return gameBoard;
+	}
+	
 	
 	// The parameter is for the first click
 	public void placeMines(int x, int y) {
@@ -62,10 +68,10 @@ public class Board {
 				randY = rand.nextInt(sizeY);
 			}
 			
-			if (board[randY][randX].isMine()) {
+			if (gameBoard[randY][randX].isMine()) {
 				i--;
 			} else {
-				board[randY][randX].setMine();
+				gameBoard[randY][randX].setMine();
 			}
 		}
 	}
@@ -74,38 +80,72 @@ public class Board {
 		int count = 0;
 		
 		if (this.inBoundary(x-1, y-1))
-				if (board[y-1][x-1].isMine())
+				if (gameBoard[y-1][x-1].isMine())
 					count++;
 		
 		if (this.inBoundary(x, y-1))
-			if (board[y-1][x].isMine())
+			if (gameBoard[y-1][x].isMine())
 				count++;
 
 		if (this.inBoundary(x+1, y-1))
-			if (board[y-1][x+1].isMine())
+			if (gameBoard[y-1][x+1].isMine())
 				count++;
 		
 		if (this.inBoundary(x-1, y))
-			if (board[y][x-1].isMine())
+			if (gameBoard[y][x-1].isMine())
 				count++;
 		
 		if (this.inBoundary(x+1, y))
-			if (board[y][x+1].isMine())
+			if (gameBoard[y][x+1].isMine())
 				count++;
 		
 		if (this.inBoundary(x-1, y+1))
-			if (board[y+1][x-1].isMine())
+			if (gameBoard[y+1][x-1].isMine())
 				count++;
 		
 		if (this.inBoundary(x, y+1))
-			if (board[y+1][x].isMine())
+			if (gameBoard[y+1][x].isMine())
 				count++;
 		
 		if (this.inBoundary(x+1, y+1))
-			if (board[y+1][x+1].isMine())
+			if (gameBoard[y+1][x+1].isMine())
 				count++;
 		
 		return count;
+	}
+	
+	//TODO Reveal until number
+	// if numberOfSurroundingMines == 0, continue revealing
+	// BreadthFirstSearch
+	public void revealTile(int x, int y) {
+		gameBoard[y][x].setRevealed();
+	}
+	
+	//TODO Merge with revealTile()
+	public void revealNeighbours(int x, int y) {
+		if (this.inBoundary(x-1, y-1))
+			gameBoard[y-1][x-1].setRevealed();
+	
+		if (this.inBoundary(x, y-1))
+			gameBoard[y-1][x].setRevealed();
+	
+		if (this.inBoundary(x+1, y-1))
+			gameBoard[y-1][x+1].setRevealed();
+		
+		if (this.inBoundary(x-1, y))
+			gameBoard[y][x-1].setRevealed();
+		
+		if (this.inBoundary(x+1, y))
+			gameBoard[y][x+1].setRevealed();
+		
+		if (this.inBoundary(x-1, y+1))
+			gameBoard[y+1][x-1].setRevealed();
+		
+		if (this.inBoundary(x, y+1))
+			gameBoard[y+1][x].setRevealed();
+		
+		if (this.inBoundary(x+1, y+1))
+			gameBoard[y+1][x+1].setRevealed();
 	}
 	
 	public boolean inBoundary(int x, int y) {
@@ -124,11 +164,11 @@ public class Board {
 	public void printBoard() {
 		for (int i = 0; i < sizeY; i++) {
 			for (int j = 0; j < sizeX; j++) {
-				if (board[i][j].isMine()) {
+				if (gameBoard[i][j].isMine()) {
 					System.out.print("* ");
-				} else if (board[i][j].isFlag()) {
+				} else if (gameBoard[i][j].isFlag()) {
 					System.out.print("F ");
-				} else if (board[i][j].isRevealed()) {
+				} else if (gameBoard[i][j].isRevealed()) {
 					System.out.print(this.numberOfSurroundingMines(j, i) + " ");
 				} else {
 					System.out.print("? ");
