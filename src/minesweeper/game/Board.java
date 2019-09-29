@@ -1,15 +1,18 @@
 package minesweeper.game;
 
 import java.util.Random;
+import java.util.Queue;
+import java.util.LinkedList;
 
 public class Board {
 	private Tile[][] gameBoard;
 	private int sizeX;
 	private int sizeY;
 	private int mines;
+	private Queue<Tile> queue;
 	
 	public Board() {
-		
+		this.queue = new LinkedList<Tile>();
 	}
 	
 	public void generateBoard(Difficulty difficulty) {
@@ -45,6 +48,53 @@ public class Board {
 		return gameBoard;
 	}
 	
+	public void searchNeighbours(int x, int y) {
+		queue.offer(gameBoard[y][x]);
+		
+		while (!queue.isEmpty()) {
+			queue.peek().setRevealed();
+			
+			if (this.numberOfSurroundingMines(queue.peek().getX(), queue.peek().getY()) == 0) {
+				this.connectNeighbours(gameBoard[queue.peek().getY()][queue.peek().getX()]);
+			}
+			
+			queue.poll();
+		}
+	}
+	
+	public void connectNeighbours(Tile tile) {
+		if (this.inBoundary(tile.getX(), tile.getY() - 1))
+			if (!gameBoard[tile.getY() - 1][tile.getX()].isRevealed())
+				queue.offer(gameBoard[tile.getY() - 1][tile.getX()]);
+		
+		if (this.inBoundary(tile.getX() + 1, tile.getY()))
+			if (!gameBoard[tile.getY()][tile.getX() + 1].isRevealed())
+				queue.offer(gameBoard[tile.getY()][tile.getX() + 1]);
+		
+		if (this.inBoundary(tile.getX(), tile.getY() + 1))
+			if (!gameBoard[tile.getY() + 1][tile.getX()].isRevealed())
+				queue.offer(gameBoard[tile.getY() + 1][tile.getX()]);
+		
+		if (this.inBoundary(tile.getX() - 1, tile.getY()))
+			if (!gameBoard[tile.getY()][tile.getX() - 1].isRevealed())
+				queue.offer(gameBoard[tile.getY()][tile.getX() - 1]);
+		
+		if (this.inBoundary(tile.getX() + 1, tile.getY() - 1))
+			if (!gameBoard[tile.getY() - 1][tile.getX() + 1].isRevealed())
+				queue.offer(gameBoard[tile.getY() - 1][tile.getX() + 1]);
+
+		if (this.inBoundary(tile.getX() + 1, tile.getY() + 1))
+			if (!gameBoard[tile.getY() + 1][tile.getX() + 1].isRevealed())
+				queue.offer(gameBoard[tile.getY() + 1][tile.getX() + 1]);
+
+		if (this.inBoundary(tile.getX() - 1, tile.getY() + 1))
+			if (!gameBoard[tile.getY() + 1][tile.getX() - 1].isRevealed())
+				queue.offer(gameBoard[tile.getY() + 1][tile.getX() - 1]);
+
+		if (this.inBoundary(tile.getX() - 1, tile.getY() - 1))
+			if (!gameBoard[tile.getY() - 1][tile.getX() - 1].isRevealed())
+				queue.offer(gameBoard[tile.getY() - 1][tile.getX() - 1]);
+	}
 	
 	// The parameter is for the first click
 	public void placeMines(int x, int y) {

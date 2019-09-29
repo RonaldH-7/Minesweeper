@@ -27,7 +27,7 @@ public class Player {
 	*/
 	
 	public void click(int x, int y) {
-		if (isFirstClick) {
+		/*if (isFirstClick) {
 			board.placeMines(x, y);
 			gameBoard[y][x].setRevealed();
 			board.revealNeighbours(x, y);
@@ -39,6 +39,18 @@ public class Player {
 		
 		if (gameBoard[y][x].isMine()) {
 			System.out.println("You lose");
+		}*/
+		
+		if (isFirstClick) {
+			board.placeMines(x, y);
+			isFirstClick = false;
+		}
+		if (gameBoard[y][x].isMine()) {
+			System.out.println("You lose");
+		} else if (board.numberOfSurroundingMines(x, y) == 0) {
+			board.searchNeighbours(x, y);
+		} else if (board.numberOfSurroundingMines(x, y) > 0) {
+			gameBoard[y][x].setRevealed();
 		}
 	}
 }
