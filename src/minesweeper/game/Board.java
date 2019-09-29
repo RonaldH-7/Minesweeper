@@ -62,41 +62,45 @@ public class Board {
 		}
 	}
 	
+	// Will add to queue, any neighbours that are in boundary and not already revealed
 	public void connectNeighbours(Tile tile) {
-		if (this.inBoundary(tile.getX(), tile.getY() - 1))
-			if (!gameBoard[tile.getY() - 1][tile.getX()].isRevealed())
-				queue.offer(gameBoard[tile.getY() - 1][tile.getX()]);
+		int x = tile.getX();
+		int y = tile.getY();
 		
-		if (this.inBoundary(tile.getX() + 1, tile.getY()))
-			if (!gameBoard[tile.getY()][tile.getX() + 1].isRevealed())
-				queue.offer(gameBoard[tile.getY()][tile.getX() + 1]);
+		if (this.inBoundary(x, y - 1))
+			if (!gameBoard[y - 1][x].isRevealed())
+				queue.offer(gameBoard[y - 1][x]);
 		
-		if (this.inBoundary(tile.getX(), tile.getY() + 1))
-			if (!gameBoard[tile.getY() + 1][tile.getX()].isRevealed())
-				queue.offer(gameBoard[tile.getY() + 1][tile.getX()]);
+		if (this.inBoundary(x + 1, y))
+			if (!gameBoard[y][x + 1].isRevealed())
+				queue.offer(gameBoard[y][x + 1]);
 		
-		if (this.inBoundary(tile.getX() - 1, tile.getY()))
-			if (!gameBoard[tile.getY()][tile.getX() - 1].isRevealed())
-				queue.offer(gameBoard[tile.getY()][tile.getX() - 1]);
+		if (this.inBoundary(x, y + 1))
+			if (!gameBoard[y + 1][x].isRevealed())
+				queue.offer(gameBoard[y + 1][x]);
 		
-		if (this.inBoundary(tile.getX() + 1, tile.getY() - 1))
-			if (!gameBoard[tile.getY() - 1][tile.getX() + 1].isRevealed())
-				queue.offer(gameBoard[tile.getY() - 1][tile.getX() + 1]);
+		if (this.inBoundary(x - 1, y))
+			if (!gameBoard[y][x - 1].isRevealed())
+				queue.offer(gameBoard[y][x - 1]);
+		
+		if (this.inBoundary(x + 1, y - 1))
+			if (!gameBoard[y - 1][x + 1].isRevealed())
+				queue.offer(gameBoard[y - 1][x + 1]);
 
-		if (this.inBoundary(tile.getX() + 1, tile.getY() + 1))
-			if (!gameBoard[tile.getY() + 1][tile.getX() + 1].isRevealed())
-				queue.offer(gameBoard[tile.getY() + 1][tile.getX() + 1]);
+		if (this.inBoundary(x + 1, y + 1))
+			if (!gameBoard[y + 1][x + 1].isRevealed())
+				queue.offer(gameBoard[y + 1][x + 1]);
 
-		if (this.inBoundary(tile.getX() - 1, tile.getY() + 1))
-			if (!gameBoard[tile.getY() + 1][tile.getX() - 1].isRevealed())
-				queue.offer(gameBoard[tile.getY() + 1][tile.getX() - 1]);
+		if (this.inBoundary(x - 1, y + 1))
+			if (!gameBoard[y + 1][x - 1].isRevealed())
+				queue.offer(gameBoard[y + 1][x - 1]);
 
-		if (this.inBoundary(tile.getX() - 1, tile.getY() - 1))
-			if (!gameBoard[tile.getY() - 1][tile.getX() - 1].isRevealed())
-				queue.offer(gameBoard[tile.getY() - 1][tile.getX() - 1]);
+		if (this.inBoundary(x - 1, y - 1))
+			if (!gameBoard[y - 1][x - 1].isRevealed())
+				queue.offer(gameBoard[y - 1][x - 1]);
 	}
 	
-	// The parameter is for the first click
+	// Will randomly place mines. Cannot place at location of first click or immediately around it
 	public void placeMines(int x, int y) {
 		Random rand = new Random();
 		
@@ -104,7 +108,6 @@ public class Board {
 			int randX = rand.nextInt(sizeX);
 			int randY = rand.nextInt(sizeY);
 			
-			// Can't place mines at the location of the first click or its neighbours
 			while ((randX == x - 1 && randY == y - 1) ||
 					(randX == x && randY == y - 1) ||
 					(randX == x + 1 && randY == y - 1) ||
@@ -162,40 +165,6 @@ public class Board {
 				count++;
 		
 		return count;
-	}
-	
-	//TODO Reveal until number
-	// if numberOfSurroundingMines == 0, continue revealing
-	// BreadthFirstSearch
-	public void revealTile(int x, int y) {
-		gameBoard[y][x].setRevealed();
-	}
-	
-	//TODO Merge with revealTile()
-	public void revealNeighbours(int x, int y) {
-		if (this.inBoundary(x-1, y-1))
-			gameBoard[y-1][x-1].setRevealed();
-	
-		if (this.inBoundary(x, y-1))
-			gameBoard[y-1][x].setRevealed();
-	
-		if (this.inBoundary(x+1, y-1))
-			gameBoard[y-1][x+1].setRevealed();
-		
-		if (this.inBoundary(x-1, y))
-			gameBoard[y][x-1].setRevealed();
-		
-		if (this.inBoundary(x+1, y))
-			gameBoard[y][x+1].setRevealed();
-		
-		if (this.inBoundary(x-1, y+1))
-			gameBoard[y+1][x-1].setRevealed();
-		
-		if (this.inBoundary(x, y+1))
-			gameBoard[y+1][x].setRevealed();
-		
-		if (this.inBoundary(x+1, y+1))
-			gameBoard[y+1][x+1].setRevealed();
 	}
 	
 	public boolean inBoundary(int x, int y) {

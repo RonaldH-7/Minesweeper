@@ -6,7 +6,8 @@ public class Manager {
 	
 	public Manager() {
 		board = new Board();
-		board.generateBoard(Difficulty.EASY);
+		//board.generateBoard(Difficulty.EASY);
+		board.generateBoard(Difficulty.HARD);
 		player = new Player(board);
 		player.click(3, 3);
 		board.printBoard();
