@@ -42,16 +42,4 @@ public class Tile {
 	public int getY() {
 		return y;
 	}
-	/*
-	@Override
-	public String toString() {
-		if (isMine) {
-			return "*";
-		} else if (isFlag) {
-			return "X";
-		} else {
-			return "?";
-		}
-	}
-	*/
 }

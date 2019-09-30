@@ -48,6 +48,14 @@ public class Board {
 		return gameBoard;
 	}
 	
+	public int getSizeX() {
+		return sizeX;
+	}
+	
+	public int getSizeY() {
+		return sizeY;
+	}
+	
 	public void searchNeighbours(int x, int y) {
 		queue.offer(gameBoard[y][x]);
 		

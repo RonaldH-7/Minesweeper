@@ -7,10 +7,9 @@ import minesweeper.ui.UserInterface;
 
 public class Main {
 	public static void main(String[] args) {
-		//Board b = new Board(Difficulty.EASY);
-		//b.placeMines(5, 3);
-		//b.printBoard();
-		
-		Manager m = new Manager();
+		//Manager m = new Manager();
+		Board board = new Board();
+		UserInterface ui = new UserInterface(board, Difficulty.HARD);
+		ui.run();
 	}
 }
