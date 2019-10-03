@@ -23,6 +23,10 @@ public class Tile {
 		isRevealed = true;
 	}
 	
+	public void setFlag() {
+		isFlag = true;
+	}
+	
 	public boolean isMine() {
 		return isMine;
 	}

@@ -2,21 +2,28 @@ package minesweeper.ui;
 
 import minesweeper.game.Board;
 import minesweeper.game.Difficulty;
+import minesweeper.game.Player;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
-import javax.swing.JButton;
+import javax.swing.JToggleButton;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
 import java.awt.GridLayout;
 import java.awt.Dimension;
+import java.awt.BorderLayout;
 import java.awt.Container;
 
 public class UserInterface implements Runnable {
 	private JFrame frame;
 	private Board board;
 	private Difficulty difficulty;
+	private Player player;
 	
-	public UserInterface(Board board, Difficulty difficulty) {
+	public UserInterface(Board board, Player player, Difficulty difficulty) {
 		this.board = board;
 		this.board.generateBoard(difficulty);
+		this.player = player;
 		this.difficulty = difficulty;
 	}
 	
@@ -39,20 +46,62 @@ public class UserInterface implements Runnable {
 		frame.pack();
 		frame.setVisible(true);
 	}
-	
+	/*
 	public void createComponents(Container container) {
 		int sizeX = board.getSizeX();
 		int sizeY = board.getSizeY();
 		container.setLayout(new GridLayout(sizeY, sizeX));
 		
-		JButton[][] buttonGrid = new JButton[sizeY][sizeX];
+		//JButton[][] buttonGrid = new JButton[sizeY][sizeX];
+		JToggleButton[][] buttonGrid = new JToggleButton[sizeY][sizeX];
 		
 		for (int i = 0; i < sizeY; i++) {
 			for (int j = 0; j < sizeX; j++) {
-				JButton button = new JButton();
+				//JButton button = new JButton();
+				JToggleButton button = new JToggleButton();
+				//button.addActionListener(new Listener(buttonGrid, board));
+				button.addMouseListener(new ClickListener(buttonGrid, board));
 				buttonGrid[i][j] = button;
 				container.add(button);
 			}
 		}
+	}*/
+	
+	public void createComponents(Container container) {
+		container.setLayout(new BorderLayout());
+		container.add(createInfoPanel(), BorderLayout.NORTH);
+		container.add(createBoardPanel(), BorderLayout.CENTER);
+	}
+	
+	public JPanel createBoardPanel() {
+		int sizeX = board.getSizeX();
+		int sizeY = board.getSizeY();
+		JPanel panel = new JPanel(new GridLayout(sizeY, sizeX));
+		
+		//JButton[][] buttonGrid = new JButton[sizeY][sizeX];
+		JToggleButton[][] buttonGrid = new JToggleButton[sizeY][sizeX];
+		
+		for (int i = 0; i < sizeY; i++) {
+			for (int j = 0; j < sizeX; j++) {
+				//JButton button = new JButton();
+				JToggleButton button = new JToggleButton();
+				//button.addActionListener(new Listener(buttonGrid, board));
+				button.addMouseListener(new ClickListener(buttonGrid, board));
+				buttonGrid[i][j] = button;
+				panel.add(button);
+			}
+		}
+		return panel;
+	}
+	
+	public JPanel createInfoPanel() {
+		JPanel panel = new JPanel(new GridLayout(1, 3));
+		JComboBox difficulty = new JComboBox();
+		JLabel mines = new JLabel("Mines remaining");
+		JLabel timer = new JLabel("Timer");
+		panel.add(difficulty);
+		panel.add(mines);
+		panel.add(timer);
+		return panel;
 	}
 }

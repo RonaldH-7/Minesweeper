@@ -3,6 +3,8 @@ package minesweeper.game;
 import java.util.Random;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Board {
 	private Tile[][] gameBoard;
@@ -10,9 +12,11 @@ public class Board {
 	private int sizeY;
 	private int mines;
 	private Queue<Tile> queue;
+	private List<Tile> undiscoveredTiles;
 	
 	public Board() {
 		this.queue = new LinkedList<Tile>();
+		undiscoveredTiles = new ArrayList<Tile>();
 	}
 	
 	public void generateBoard(Difficulty difficulty) {
@@ -39,6 +43,7 @@ public class Board {
 		for (int i = 0; i < sizeY; i++) {
 			for (int j = 0; j < sizeX; j++) {
 				gameBoard[i][j] = new Tile(j, i);
+				undiscoveredTiles.add(gameBoard[i][j]);
 			}
 		}
 	}
@@ -60,13 +65,16 @@ public class Board {
 		queue.offer(gameBoard[y][x]);
 		
 		while (!queue.isEmpty()) {
-			queue.peek().setRevealed();
+			Tile tile = queue.poll();
+			int currentX = tile.getX();
+			int currentY = tile.getY();
 			
-			if (this.numberOfSurroundingMines(queue.peek().getX(), queue.peek().getY()) == 0) {
-				this.connectNeighbours(gameBoard[queue.peek().getY()][queue.peek().getX()]);
+			tile.setRevealed();
+			undiscoveredTiles.remove(tile);
+			
+			if (this.numberOfSurroundingMines(currentX, currentY) == 0) {
+				this.connectNeighbours(gameBoard[currentY][currentX]);
 			}
-			
-			queue.poll();
 		}
 	}
 	
@@ -75,35 +83,35 @@ public class Board {
 		int x = tile.getX();
 		int y = tile.getY();
 		
-		if (this.inBoundary(x, y - 1))
+		if (inBoundary(x, y - 1))
 			if (!gameBoard[y - 1][x].isRevealed())
 				queue.offer(gameBoard[y - 1][x]);
 		
-		if (this.inBoundary(x + 1, y))
+		if (inBoundary(x + 1, y))
 			if (!gameBoard[y][x + 1].isRevealed())
 				queue.offer(gameBoard[y][x + 1]);
 		
-		if (this.inBoundary(x, y + 1))
+		if (inBoundary(x, y + 1))
 			if (!gameBoard[y + 1][x].isRevealed())
 				queue.offer(gameBoard[y + 1][x]);
 		
-		if (this.inBoundary(x - 1, y))
+		if (inBoundary(x - 1, y))
 			if (!gameBoard[y][x - 1].isRevealed())
 				queue.offer(gameBoard[y][x - 1]);
 		
-		if (this.inBoundary(x + 1, y - 1))
+		if (inBoundary(x + 1, y - 1))
 			if (!gameBoard[y - 1][x + 1].isRevealed())
 				queue.offer(gameBoard[y - 1][x + 1]);
 
-		if (this.inBoundary(x + 1, y + 1))
+		if (inBoundary(x + 1, y + 1))
 			if (!gameBoard[y + 1][x + 1].isRevealed())
 				queue.offer(gameBoard[y + 1][x + 1]);
 
-		if (this.inBoundary(x - 1, y + 1))
+		if (inBoundary(x - 1, y + 1))
 			if (!gameBoard[y + 1][x - 1].isRevealed())
 				queue.offer(gameBoard[y + 1][x - 1]);
 
-		if (this.inBoundary(x - 1, y - 1))
+		if (inBoundary(x - 1, y - 1))
 			if (!gameBoard[y - 1][x - 1].isRevealed())
 				queue.offer(gameBoard[y - 1][x - 1]);
 	}
@@ -133,6 +141,7 @@ public class Board {
 				i--;
 			} else {
 				gameBoard[randY][randX].setMine();
+				undiscoveredTiles.remove(gameBoard[randY][randX]);
 			}
 		}
 	}
@@ -188,6 +197,10 @@ public class Board {
 		return mines;
 	}
 	
+	public List<Tile> getUndiscoveredTiles() {
+		return undiscoveredTiles;
+	}
+	
 	public void printBoard() {
 		for (int i = 0; i < sizeY; i++) {
 			for (int j = 0; j < sizeX; j++) {
@@ -202,6 +215,16 @@ public class Board {
 				}
 			}
 			System.out.println();
+		}
+	}
+	
+	public String getTileText(int x, int y) {
+		if (gameBoard[y][x].isRevealed()) {
+			return Integer.toString(this.numberOfSurroundingMines(x, y));
+		} else if (gameBoard[y][x].isFlag() ) {
+			return "F";
+		} else {
+			return "";
 		}
 	}
 }
