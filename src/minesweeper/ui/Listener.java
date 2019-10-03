@@ -1,47 +1,28 @@
 package minesweeper.ui;
 
+import minesweeper.game.Difficulty;
 import minesweeper.game.Board;
-//import minesweeper.game.Player;
-import minesweeper.game.Tile;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JToggleButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
 
 public class Listener implements ActionListener {
-	private JToggleButton[][] buttonGrid;
-	private Board board;
-	//private Player player;
-	private Tile[][] gameBoard;
+	private JFrame frame;
+	private JComboBox dropDown;
 	
-	public Listener(JToggleButton[][] buttonGrid, Board board) {
-		this.buttonGrid = buttonGrid;
-		this.board = board;
-		//player = new Player(board);
-		gameBoard = board.getBoard();
+	public Listener(JFrame frame, JComboBox dropDown) {
+		this.frame = frame;
+		this.dropDown = dropDown;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		for (int i = 0; i < board.getSizeY(); i++) {
-			for (int j = 0; j < board.getSizeX(); j++) {
-				
-				if (buttonGrid[i][j] == ae.getSource()) {
-					//player.click(j, i);
-					board.printBoard();
-					System.out.println("--------------------");
-				}
-				buttonGrid[i][j].setText(board.getTileText(j, i));
-			}
-		}
+		frame.dispose();
+		Board board = new Board();
 		
-		for (int i = 0; i < board.getSizeY(); i++) {
-			for (int j = 0; j < board.getSizeX(); j++) {
-				buttonGrid[i][j].setText(board.getTileText(j, i));
-				if (!buttonGrid[i][j].getText().isEmpty()) {
-					buttonGrid[i][j].setEnabled(false);
-				}
-			}
-		}
+		String difficulty = dropDown.getSelectedItem().toString().toUpperCase();
+		UserInterface ui = new UserInterface(board, Difficulty.valueOf(difficulty));
+		ui.run();
 	}
 }

@@ -27,6 +27,10 @@ public class Tile {
 		isFlag = true;
 	}
 	
+	public void removeFlag() {
+		isFlag = false;
+	}
+	
 	public boolean isMine() {
 		return isMine;
 	}

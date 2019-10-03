@@ -1,19 +1,24 @@
 package minesweeper.ui;
 
 import minesweeper.game.Board;
-//import minesweeper.game.Player;
+import minesweeper.game.Tile;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
+import javax.swing.JLabel;
 
 public class ClickListener implements MouseListener {
 	private JToggleButton[][] buttonGrid;
 	private Board board;
+	private JLabel flagsRemaining;
+	private Tile[][] tileGrid;
 	
-	public ClickListener(JToggleButton[][] buttonGrid, Board board) {
+	public ClickListener(JToggleButton[][] buttonGrid, Board board, JLabel flagsRemaining) {
 		this.buttonGrid = buttonGrid;
 		this.board = board;
+		this.flagsRemaining = flagsRemaining;
+		tileGrid = board.getBoard();
 	}
 
 	@Override
@@ -53,13 +58,23 @@ public class ClickListener implements MouseListener {
 			for (int j = 0; j < board.getSizeX(); j++) {
 				
 				if (buttonGrid[i][j] == e.getSource()) {
-					board.setFlag(j, i);
+					if (tileGrid[i][j].isFlag()) {
+						board.removeFlag(j, i);
+						buttonGrid[i][j].setText("");
+						buttonGrid[i][j].setEnabled(true);
+					} else {
+						board.setFlag(j, i);
+						buttonGrid[i][j].setText("F");
+					}
+					
 					board.printBoard();
 					System.out.println("--------------------");
 				}
-				buttonGrid[i][j].setText("F");
+				
 			}
 		}
+		
+		flagsRemaining.setText("Flags remaining: " + board.getMines());
 	}
 
 	@Override

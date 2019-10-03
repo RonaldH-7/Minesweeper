@@ -18,9 +18,7 @@ public class Board {
 	public Board() {
 		this.queue = new LinkedList<Tile>();
 		undiscoveredTiles = new ArrayList<Tile>();
-		//TEST
 		isFirstClick = true;
-		//TEST
 	}
 	
 	public void generateBoard(Difficulty difficulty) {
@@ -75,6 +73,14 @@ public class Board {
 	
 	public void setFlag(int x, int y) {
 		gameBoard[y][x].setFlag();
+		
+		//TEST
+		mines--;
+	}
+	
+	public void removeFlag(int x, int y) {
+		gameBoard[y][x].removeFlag();
+		mines++;
 	}
 
 	
