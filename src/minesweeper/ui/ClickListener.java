@@ -1,7 +1,7 @@
 package minesweeper.ui;
 
 import minesweeper.game.Board;
-import minesweeper.game.Player;
+//import minesweeper.game.Player;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseEvent;
 import javax.swing.JToggleButton;
@@ -10,12 +10,10 @@ import javax.swing.SwingUtilities;
 public class ClickListener implements MouseListener {
 	private JToggleButton[][] buttonGrid;
 	private Board board;
-	private Player player;
 	
 	public ClickListener(JToggleButton[][] buttonGrid, Board board) {
 		this.buttonGrid = buttonGrid;
 		this.board = board;
-		player = new Player(board);
 	}
 
 	@Override
@@ -41,7 +39,7 @@ public class ClickListener implements MouseListener {
 			for (int j = 0; j < board.getSizeX(); j++) {
 				
 				if (buttonGrid[i][j] == e.getSource()) {
-					player.click(j, i);
+					board.click(j, i);
 					board.printBoard();
 					System.out.println("--------------------");
 				}
@@ -55,7 +53,7 @@ public class ClickListener implements MouseListener {
 			for (int j = 0; j < board.getSizeX(); j++) {
 				
 				if (buttonGrid[i][j] == e.getSource()) {
-					player.setFlag(j, i);
+					board.setFlag(j, i);
 					board.printBoard();
 					System.out.println("--------------------");
 				}

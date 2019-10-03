@@ -13,10 +13,14 @@ public class Board {
 	private int mines;
 	private Queue<Tile> queue;
 	private List<Tile> undiscoveredTiles;
+	private boolean isFirstClick;
 	
 	public Board() {
 		this.queue = new LinkedList<Tile>();
 		undiscoveredTiles = new ArrayList<Tile>();
+		//TEST
+		isFirstClick = true;
+		//TEST
 	}
 	
 	public void generateBoard(Difficulty difficulty) {
@@ -48,6 +52,31 @@ public class Board {
 		}
 	}
 	
+	public void click(int x, int y) {
+		if (isFirstClick) {
+			placeMines(x, y);
+			isFirstClick = false;
+		}
+
+		Tile tile = gameBoard[y][x];
+		if (tile.isMine()) {
+			System.out.println("You lose");
+		} else if (numberOfSurroundingMines(x, y) == 0) {
+			searchNeighbours(x, y);
+		} else if (numberOfSurroundingMines(x, y) > 0) {
+			tile.setRevealed();
+			undiscoveredTiles.remove(gameBoard[y][x]);
+		}
+		
+		if (undiscoveredTiles.isEmpty()) {
+			System.out.println("You win");
+		}
+	}
+	
+	public void setFlag(int x, int y) {
+		gameBoard[y][x].setFlag();
+	}
+
 	
 	public Tile[][] getBoard() {
 		return gameBoard;

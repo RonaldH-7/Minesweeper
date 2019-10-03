@@ -2,7 +2,7 @@ package minesweeper.ui;
 
 import minesweeper.game.Board;
 import minesweeper.game.Difficulty;
-import minesweeper.game.Player;
+//import minesweeper.game.Player;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
 import javax.swing.JToggleButton;
@@ -18,12 +18,10 @@ public class UserInterface implements Runnable {
 	private JFrame frame;
 	private Board board;
 	private Difficulty difficulty;
-	private Player player;
 	
-	public UserInterface(Board board, Player player, Difficulty difficulty) {
+	public UserInterface(Board board, Difficulty difficulty) {
 		this.board = board;
 		this.board.generateBoard(difficulty);
-		this.player = player;
 		this.difficulty = difficulty;
 	}
 	
@@ -78,14 +76,11 @@ public class UserInterface implements Runnable {
 		int sizeY = board.getSizeY();
 		JPanel panel = new JPanel(new GridLayout(sizeY, sizeX));
 		
-		//JButton[][] buttonGrid = new JButton[sizeY][sizeX];
 		JToggleButton[][] buttonGrid = new JToggleButton[sizeY][sizeX];
 		
 		for (int i = 0; i < sizeY; i++) {
 			for (int j = 0; j < sizeX; j++) {
-				//JButton button = new JButton();
 				JToggleButton button = new JToggleButton();
-				//button.addActionListener(new Listener(buttonGrid, board));
 				button.addMouseListener(new ClickListener(buttonGrid, board));
 				buttonGrid[i][j] = button;
 				panel.add(button);
