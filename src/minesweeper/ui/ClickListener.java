@@ -3,18 +3,19 @@ package minesweeper.ui;
 import minesweeper.game.Board;
 import minesweeper.game.Tile;
 import java.awt.event.MouseListener;
+import java.awt.Color;
 import java.awt.event.MouseEvent;
-import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 import javax.swing.JLabel;
+import javax.swing.JButton;
 
 public class ClickListener implements MouseListener {
-	private JToggleButton[][] buttonGrid;
+	private JButton[][] buttonGrid;
 	private Board board;
 	private JLabel flagsRemaining;
 	private Tile[][] tileGrid;
 	
-	public ClickListener(JToggleButton[][] buttonGrid, Board board, JLabel flagsRemaining) {
+	public ClickListener(JButton[][] buttonGrid, Board board, JLabel flagsRemaining) {
 		this.buttonGrid = buttonGrid;
 		this.board = board;
 		this.flagsRemaining = flagsRemaining;
@@ -43,7 +44,7 @@ public class ClickListener implements MouseListener {
 		for (int i = 0; i < board.getSizeY(); i++) {
 			for (int j = 0; j < board.getSizeX(); j++) {
 				
-				if (buttonGrid[i][j] == e.getSource()) {
+				if (buttonGrid[i][j] == e.getSource() && buttonGrid[i][j].isEnabled()) {
 					board.click(j, i);
 					board.printBoard();
 					System.out.println("--------------------");
@@ -65,6 +66,7 @@ public class ClickListener implements MouseListener {
 					} else {
 						board.setFlag(j, i);
 						buttonGrid[i][j].setText("F");
+						buttonGrid[i][j].setEnabled(false);
 					}
 					
 					board.printBoard();

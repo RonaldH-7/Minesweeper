@@ -2,10 +2,9 @@ package minesweeper.ui;
 
 import minesweeper.game.Board;
 import minesweeper.game.Difficulty;
-//import minesweeper.game.Player;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
-import javax.swing.JToggleButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -56,12 +55,11 @@ public class UserInterface implements Runnable {
 		int sizeX = board.getSizeX();
 		int sizeY = board.getSizeY();
 		JPanel panel = new JPanel(new GridLayout(sizeY, sizeX));
-		
-		JToggleButton[][] buttonGrid = new JToggleButton[sizeY][sizeX];
+		JButton[][] buttonGrid = new JButton[sizeY][sizeX];
 		
 		for (int i = 0; i < sizeY; i++) {
 			for (int j = 0; j < sizeX; j++) {
-				JToggleButton button = new JToggleButton();
+				JButton button = new JButton();
 				button.addMouseListener(new ClickListener(buttonGrid, board, flagsRemaining));
 				buttonGrid[i][j] = button;
 				panel.add(button);
