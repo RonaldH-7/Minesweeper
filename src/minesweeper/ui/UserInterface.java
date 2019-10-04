@@ -13,11 +13,15 @@ import java.awt.Dimension;
 import java.awt.BorderLayout;
 import java.awt.Container;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+
 public class UserInterface implements Runnable {
 	private JFrame frame;
 	private Board board;
 	private Difficulty difficulty;
 	private JLabel flagsRemaining;
+	private JComboBox dropDown;
 	
 	public UserInterface(Board board, Difficulty difficulty) {
 		this.board = board;
@@ -60,7 +64,8 @@ public class UserInterface implements Runnable {
 		for (int i = 0; i < sizeY; i++) {
 			for (int j = 0; j < sizeX; j++) {
 				JButton button = new JButton();
-				button.addMouseListener(new ClickListener(buttonGrid, board, flagsRemaining));
+				button.setIcon(new ImageIcon(((new ImageIcon("images\\grass.png").getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)))));
+				button.addMouseListener(new ClickListener(buttonGrid, board, flagsRemaining, frame, dropDown));
 				buttonGrid[i][j] = button;
 				panel.add(button);
 			}
@@ -73,7 +78,7 @@ public class UserInterface implements Runnable {
 		
 		String[] difficultyList = {"Easy", "Medium", "Hard"};
 		
-		JComboBox dropDown = new JComboBox(difficultyList);
+		dropDown = new JComboBox(difficultyList);
 		
 		if (difficulty == difficulty.EASY) {
 			dropDown.setSelectedIndex(0);

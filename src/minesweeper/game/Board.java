@@ -14,11 +14,13 @@ public class Board {
 	private Queue<Tile> queue;
 	private List<Tile> undiscoveredTiles;
 	private boolean isFirstClick;
+	private boolean hasLost;
 	
 	public Board() {
 		this.queue = new LinkedList<Tile>();
 		undiscoveredTiles = new ArrayList<Tile>();
 		isFirstClick = true;
+		hasLost = false;
 	}
 	
 	public void generateBoard(Difficulty difficulty) {
@@ -58,7 +60,7 @@ public class Board {
 
 		Tile tile = gameBoard[y][x];
 		if (tile.isMine()) {
-			System.out.println("You lose");
+			hasLost = true;
 		} else if (numberOfSurroundingMines(x, y) == 0) {
 			searchNeighbours(x, y);
 		} else if (numberOfSurroundingMines(x, y) > 0) {
@@ -66,9 +68,20 @@ public class Board {
 			undiscoveredTiles.remove(gameBoard[y][x]);
 		}
 		
+//		if (undiscoveredTiles.isEmpty()) {
+//			System.out.println("You win");
+//		}
+	}
+	
+	public boolean hasWon() {
 		if (undiscoveredTiles.isEmpty()) {
-			System.out.println("You win");
+			return true;
 		}
+		return false;
+	}
+	
+	public boolean hasLost() {
+		return hasLost;
 	}
 	
 	public void setFlag(int x, int y) {
