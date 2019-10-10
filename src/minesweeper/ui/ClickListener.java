@@ -68,6 +68,12 @@ public class ClickListener implements MouseListener {
 				if (board.getTileText(j, i).equals("6")) {
 					buttonGrid[i][j].setDisabledIcon(new ImageIcon(((new ImageIcon("images\\6.png").getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)))));
 				}
+				if (board.getTileText(j, i).equals("7")) {
+					buttonGrid[i][j].setDisabledIcon(new ImageIcon(((new ImageIcon("images\\7.png").getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)))));
+				}
+				if (board.getTileText(j, i).equals("8")) {
+					buttonGrid[i][j].setDisabledIcon(new ImageIcon(((new ImageIcon("images\\8.png").getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)))));
+				}
 			}
 		}
 	}
