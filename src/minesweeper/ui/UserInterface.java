@@ -46,6 +46,7 @@ public class UserInterface implements Runnable {
 		this.createComponents(frame.getContentPane());
 		
 		frame.pack();
+		frame.setResizable(false);
 		frame.setVisible(true);
 	}
 	

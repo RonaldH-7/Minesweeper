@@ -131,37 +131,45 @@ public class Board {
 		int x = tile.getX();
 		int y = tile.getY();
 		
-		if (inBoundary(x, y - 1))
-			if (!gameBoard[y - 1][x].isRevealed())
-				queue.offer(gameBoard[y - 1][x]);
+		Coordinate northWest = new Coordinate(x-1, y-1);
+		if (inBoundary(northWest))
+			if (!gameBoard[northWest.y][northWest.x].isRevealed())
+				queue.offer(gameBoard[northWest.y][northWest.x]);
 		
-		if (inBoundary(x + 1, y))
-			if (!gameBoard[y][x + 1].isRevealed())
-				queue.offer(gameBoard[y][x + 1]);
+		Coordinate north = new Coordinate(x, y-1);
+		if (inBoundary(north))
+			if (!gameBoard[north.y][north.x].isRevealed())
+				queue.offer(gameBoard[north.y][north.x]);
 		
-		if (inBoundary(x, y + 1))
-			if (!gameBoard[y + 1][x].isRevealed())
-				queue.offer(gameBoard[y + 1][x]);
+		Coordinate northEast = new Coordinate(x+1, y-1);
+		if (inBoundary(northEast))
+			if (!gameBoard[northEast.y][northEast.x].isRevealed())
+				queue.offer(gameBoard[northEast.y][northEast.x]);
 		
-		if (inBoundary(x - 1, y))
-			if (!gameBoard[y][x - 1].isRevealed())
-				queue.offer(gameBoard[y][x - 1]);
+		Coordinate east = new Coordinate(x+1, y);
+		if (inBoundary(east))
+			if (!gameBoard[east.y][east.x].isRevealed())
+				queue.offer(gameBoard[east.y][east.x]);
 		
-		if (inBoundary(x + 1, y - 1))
-			if (!gameBoard[y - 1][x + 1].isRevealed())
-				queue.offer(gameBoard[y - 1][x + 1]);
-
-		if (inBoundary(x + 1, y + 1))
-			if (!gameBoard[y + 1][x + 1].isRevealed())
-				queue.offer(gameBoard[y + 1][x + 1]);
-
-		if (inBoundary(x - 1, y + 1))
-			if (!gameBoard[y + 1][x - 1].isRevealed())
-				queue.offer(gameBoard[y + 1][x - 1]);
-
-		if (inBoundary(x - 1, y - 1))
-			if (!gameBoard[y - 1][x - 1].isRevealed())
-				queue.offer(gameBoard[y - 1][x - 1]);
+		Coordinate southEast = new Coordinate(x+1, y+1);
+		if (inBoundary(southEast))
+			if (!gameBoard[southEast.y][southEast.x].isRevealed())
+				queue.offer(gameBoard[southEast.y][southEast.x]);
+		
+		Coordinate south = new Coordinate(x, y+1);
+		if (inBoundary(south))
+			if (!gameBoard[south.y][south.x].isRevealed())
+				queue.offer(gameBoard[south.y][south.x]);
+		
+		Coordinate southWest = new Coordinate(x-1, y+1);
+		if (inBoundary(southWest))
+			if (!gameBoard[southWest.y][southWest.x].isRevealed())
+				queue.offer(gameBoard[southWest.y][southWest.x]);
+		
+		Coordinate west = new Coordinate(x-1, y);
+		if (inBoundary(west))
+			if (!gameBoard[west.y][west.x].isRevealed())
+				queue.offer(gameBoard[west.y][west.x]);
 	}
 	
 	// Will randomly place mines. Cannot place at location of first click or immediately around it
@@ -197,44 +205,52 @@ public class Board {
 	public int numberOfSurroundingMines(int x, int y) {
 		int count = 0;
 		
-		if (this.inBoundary(x-1, y-1))
-				if (gameBoard[y-1][x-1].isMine())
+		Coordinate northWest = new Coordinate(x-1, y-1);
+		if (this.inBoundary(northWest))
+				if (gameBoard[northWest.y][northWest.x].isMine())
 					count++;
 		
-		if (this.inBoundary(x, y-1))
-			if (gameBoard[y-1][x].isMine())
+		Coordinate north = new Coordinate(x, y-1);
+		if (this.inBoundary(north))
+			if (gameBoard[north.y][north.x].isMine())
 				count++;
 
-		if (this.inBoundary(x+1, y-1))
-			if (gameBoard[y-1][x+1].isMine())
+		Coordinate northEast = new Coordinate(x+1, y-1);
+		if (this.inBoundary(northEast))
+			if (gameBoard[northEast.y][northEast.x].isMine())
 				count++;
 		
-		if (this.inBoundary(x-1, y))
-			if (gameBoard[y][x-1].isMine())
+		Coordinate east = new Coordinate(x+1, y);
+		if (this.inBoundary(east))
+			if (gameBoard[east.y][east.x].isMine())
 				count++;
 		
-		if (this.inBoundary(x+1, y))
-			if (gameBoard[y][x+1].isMine())
+		Coordinate southEast = new Coordinate(x+1, y+1);
+		if (this.inBoundary(southEast))
+			if (gameBoard[southEast.y][southEast.x].isMine())
 				count++;
 		
-		if (this.inBoundary(x-1, y+1))
-			if (gameBoard[y+1][x-1].isMine())
+		Coordinate south = new Coordinate(x, y+1);
+		if (this.inBoundary(south))
+			if (gameBoard[south.y][south.x].isMine())
 				count++;
 		
-		if (this.inBoundary(x, y+1))
-			if (gameBoard[y+1][x].isMine())
+		Coordinate southWest = new Coordinate(x-1, y+1);
+		if (this.inBoundary(southWest))
+			if (gameBoard[southWest.y][southWest.x].isMine())
 				count++;
 		
-		if (this.inBoundary(x+1, y+1))
-			if (gameBoard[y+1][x+1].isMine())
+		Coordinate west = new Coordinate(x-1, y);
+		if (this.inBoundary(west))
+			if (gameBoard[west.y][west.x].isMine())
 				count++;
 		
 		return count;
 	}
 	
-	public boolean inBoundary(int x, int y) {
-		if (x >= 0 && x < sizeX) {
-			if (y >= 0 && y < sizeY) {
+	public boolean inBoundary(Coordinate coordinate) {
+		if (coordinate.x >= 0 && coordinate.x < sizeX) {
+			if (coordinate.y >= 0 && coordinate.y < sizeY) {
 				return true;
 			}
 		}
