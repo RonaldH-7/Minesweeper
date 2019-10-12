@@ -40,54 +40,19 @@ public class ClickListener implements MouseListener {
 			rightClick(e);
 		}
 		
-		for (int i = 0; i < board.getSizeY(); i++) {
-			for (int j = 0; j < board.getSizeX(); j++) {
-				buttonGrid[i][j].setText(board.getTileText(j, i));
-				if (!buttonGrid[i][j].getText().isEmpty()) {
-					buttonGrid[i][j].setEnabled(false);
-				}
-				
-				if (board.getTileText(j, i).equals("0")) {
-					buttonGrid[i][j].setDisabledIcon(new ImageIcon(((new ImageIcon("images\\0.png").getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)))));
-				}
-				if (board.getTileText(j, i).equals("1")) {
-					buttonGrid[i][j].setDisabledIcon(new ImageIcon(((new ImageIcon("images\\1.png").getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)))));
-				}
-				if (board.getTileText(j, i).equals("2")) {
-					buttonGrid[i][j].setDisabledIcon(new ImageIcon(((new ImageIcon("images\\2.png").getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)))));
-				}
-				if (board.getTileText(j, i).equals("3")) {
-					buttonGrid[i][j].setDisabledIcon(new ImageIcon(((new ImageIcon("images\\3.png").getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)))));
-				}
-				if (board.getTileText(j, i).equals("4")) {
-					buttonGrid[i][j].setDisabledIcon(new ImageIcon(((new ImageIcon("images\\4.png").getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)))));
-				}
-				if (board.getTileText(j, i).equals("5")) {
-					buttonGrid[i][j].setDisabledIcon(new ImageIcon(((new ImageIcon("images\\5.png").getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)))));
-				}
-				if (board.getTileText(j, i).equals("6")) {
-					buttonGrid[i][j].setDisabledIcon(new ImageIcon(((new ImageIcon("images\\6.png").getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)))));
-				}
-				if (board.getTileText(j, i).equals("7")) {
-					buttonGrid[i][j].setDisabledIcon(new ImageIcon(((new ImageIcon("images\\7.png").getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)))));
-				}
-				if (board.getTileText(j, i).equals("8")) {
-					buttonGrid[i][j].setDisabledIcon(new ImageIcon(((new ImageIcon("images\\8.png").getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)))));
-				}
-			}
-		}
+		reveal();
 	}
 	
 	private void leftClick(MouseEvent e) {
 		for (int i = 0; i < board.getSizeY(); i++) {
 			for (int j = 0; j < board.getSizeX(); j++) {
-				
+
 				if (buttonGrid[i][j] == e.getSource() && buttonGrid[i][j].isEnabled()) {
 					board.click(j, i);
 					board.printBoard();
 					System.out.println("--------------------");
 				}
-				//buttonGrid[i][j].setText(board.getTileText(j, i));
+				
 			}
 		}
 		loseCheck();
@@ -101,11 +66,11 @@ public class ClickListener implements MouseListener {
 				if (buttonGrid[i][j] == e.getSource()) {
 					if (tileGrid[i][j].isFlag()) {
 						board.removeFlag(j, i);
-						buttonGrid[i][j].setIcon(new ImageIcon(((new ImageIcon("images\\grass.png").getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)))));
+						buttonGrid[i][j].setIcon(getImageIcon("grass"));
 						buttonGrid[i][j].setEnabled(true);
 					} else {
 						board.setFlag(j, i);
-						buttonGrid[i][j].setDisabledIcon(new ImageIcon(((new ImageIcon("images\\flag.png").getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH)))));
+						buttonGrid[i][j].setDisabledIcon(getImageIcon("F"));
 						buttonGrid[i][j].setEnabled(false);
 					}
 					
@@ -117,6 +82,21 @@ public class ClickListener implements MouseListener {
 		}
 		
 		flagsRemaining.setText("Flags remaining: " + board.getMines());
+	}
+	
+	public void reveal() {
+		for (int i = 0; i < board.getSizeY(); i++) {
+			for (int j = 0; j < board.getSizeX(); j++) {
+				buttonGrid[i][j].setText(board.getTileText(j, i));
+				if (!buttonGrid[i][j].getText().isEmpty()) {
+					buttonGrid[i][j].setEnabled(false);
+				}
+				
+				String text = board.getTileText(j, i);
+				ImageIcon icon = getImageIcon(text);
+				buttonGrid[i][j].setDisabledIcon(icon);
+			}
+		}
 	}
 	
 	public void winCheck() {
@@ -147,27 +127,28 @@ public class ClickListener implements MouseListener {
 		ui.run();
 	}
 
+	public ImageIcon getImageIcon(String text) {
+		String path = "images\\" + text + ".png";
+		return new ImageIcon(((new ImageIcon(path).getImage().getScaledInstance(60, 60, java.awt.Image.SCALE_SMOOTH))));
+	}
+	
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 	
